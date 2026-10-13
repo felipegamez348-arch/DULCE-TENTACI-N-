@@ -1,0 +1,907 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Panel de Administración | Dulce Artesanal</title>
+    <meta name="description" content="Panel de administración de productos para panadería y repostería Dulce Artesanal.">
+    <link rel="icon" href="favicon.ico">
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;600;700&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- Estilos base y de administración -->
+    <link rel="stylesheet" href="assets/css/style.css">
+    <link rel="stylesheet" href="assets/css/admin.css">
+</head>
+<body class="admin-body">
+
+    <!-- ========================================================
+         VISTA 1: INICIO DE SESIÓN DE ADMINISTRADOR (LOGIN)
+         ======================================================== -->
+    <div id="loginView" class="admin-login-wrapper">
+        <div class="admin-login-card">
+            <div class="admin-login-logo">
+                <img src="favicon.ico" alt="Logo Dulce Artesanal">
+                <h1>DULCE ARTESANAL</h1>
+                <p>Gestión de Productos</p>
+            </div>
+            
+            <span class="admin-login-badge"><i class="fas fa-shield-alt"></i> Acceso Restringido</span>
+
+            <div id="loginAlert" class="admin-login-alert" role="alert">
+                <i class="fas fa-exclamation-circle"></i> <span id="loginAlertText">Correo o contraseña incorrectos.</span>
+            </div>
+
+            <form id="adminLoginForm" class="admin-login-form">
+                <div class="admin-field-group">
+                    <label for="adminEmail">Correo Electrónico</label>
+                    <div class="admin-input-wrap">
+                        <i class="fas fa-envelope input-icon"></i>
+                        <input type="email" id="adminEmail" class="admin-input" placeholder="ejemplo@correo.com" value="felipegamez348@gmail.com" required autocomplete="email">
+                    </div>
+                </div>
+
+                <div class="admin-field-group">
+                    <label for="adminPassword">Contraseña</label>
+                    <div class="admin-input-wrap">
+                        <i class="fas fa-lock input-icon"></i>
+                        <input type="password" id="adminPassword" class="admin-input" placeholder="••••••••" required autocomplete="current-password">
+                        <button type="button" id="btnTogglePassword" class="btn-toggle-pass" aria-label="Mostrar u ocultar contraseña">
+                            <i class="fas fa-eye" id="togglePassIcon"></i>
+                        </button>
+                    </div>
+                </div>
+
+                <!-- WIDGET RECAPTCHA "NO SOY UN ROBOT" -->
+                <div class="recaptcha-widget-container" id="recaptchaContainer">
+                    <div class="recaptcha-box" id="recaptchaBox">
+                        <div class="recaptcha-left" id="recaptchaTrigger" role="button" tabindex="0" aria-label="Verificación No soy un robot">
+                            <div class="recaptcha-checkbox" id="recaptchaCheckbox" role="checkbox" aria-checked="false">
+                                <div class="recaptcha-spinner" id="recaptchaSpinner"></div>
+                                <svg class="recaptcha-checkmark" id="recaptchaCheckmark" viewBox="0 0 24 24">
+                                    <path fill="none" stroke="#0f9d58" stroke-width="3.2" stroke-linecap="round" stroke-linejoin="round" d="M4 12l5 5L20 6"></path>
+                                </svg>
+                            </div>
+                            <span class="recaptcha-label">No soy un robot</span>
+                        </div>
+                        <div class="recaptcha-right">
+                            <svg class="recaptcha-logo-icon" viewBox="0 0 48 48">
+                                <path fill="#1a73e8" d="M24 4C13 4 4 13 4 24h6c0-7.7 6.3-14 14-14s14 6.3 14 14h6c0-11-9-20-20-20z"/>
+                                <path fill="#9aa0a6" d="M24 44c11 0 20-9 20-20h-6c0 7.7-6.3 14-14 14s-14-6.3-14-14H4c0 11 9 20 20 20z"/>
+                                <path fill="#1a73e8" d="M38 18l6 6 6-6z"/>
+                                <path fill="#9aa0a6" d="M10 30l-6-6-6 6z"/>
+                            </svg>
+                            <span class="recaptcha-brand">reCAPTCHA</span>
+                            <div class="recaptcha-terms">
+                                <span>Privacidad</span> - <span>Condiciones</span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="recaptcha-error" id="recaptchaError">Por favor confirma que no eres un robot.</div>
+                </div>
+
+                <!-- BOTÓN INGRESAR ESTILO PÍLDORA -->
+                <div style="text-align: center; margin: 18px 0 14px;">
+                    <button type="submit" id="btnLoginSubmit" class="btn-recaptcha-ingresar">
+                        Ingresar
+                    </button>
+                </div>
+
+                <div class="admin-login-options" style="justify-content: center; gap: 16px; margin-bottom: 16px;">
+                    <label>
+                        <input type="checkbox" id="rememberMe" checked>
+                        <span>Recordar sesión</span>
+                    </label>
+                    <a href="javascript:void(0)" id="btnFillDemo" style="color:var(--admin-gold); text-decoration:none; font-size:0.8rem;" title="Completar clave de administrador">
+                        <i class="fas fa-key"></i> Clave: PASTEL 2060
+                    </a>
+                </div>
+
+                <div style="text-align: center;">
+                    <a href="index.html" class="admin-back-link">
+                        <i class="fas fa-arrow-left"></i> Volver a la Tienda Pública
+                    </a>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- ========================================================
+         VISTA 2: PANEL DE CONTROL ADMINISTRATIVO (DASHBOARD)
+         ======================================================== -->
+    <div id="dashboardView" style="display: none; flex-direction: column; min-height: 100vh;">
+        
+        <!-- NAVBAR DEL ADMINISTRADOR -->
+        <header class="admin-navbar">
+            <div class="admin-nav-container">
+                <a href="admin.html" class="admin-nav-brand">
+                    <img src="favicon.ico" alt="Logo Dulce Artesanal">
+                    <div class="admin-brand-text">
+                        <h2>DULCE ARTESANAL</h2>
+                        <span>Panel de Administración</span>
+                    </div>
+                </a>
+
+                <div class="admin-nav-user">
+                    <div class="admin-user-profile">
+                        <img src="assets/images/felipe_gamez.jpeg" alt="Felipe Gámez" class="admin-user-avatar" onerror="this.src='favicon.ico'">
+                        <div class="admin-user-info">
+                            <div class="admin-user-name">Felipe Gámez</div>
+                            <div class="admin-user-role"><i class="fas fa-circle" style="font-size:0.5rem; color:#2ecc71;"></i> Administrador</div>
+                        </div>
+                    </div>
+
+                    <div class="admin-nav-actions">
+                        <a href="index.html" target="_blank" class="admin-btn-store" title="Abrir la tienda en una nueva pestaña">
+                            <i class="fas fa-external-link-alt"></i> Ver Tienda
+                        </a>
+                        <button type="button" id="btnLogout" class="admin-btn-logout" title="Cerrar sesión de administrador">
+                            <i class="fas fa-power-off"></i> Salir
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </header>
+
+        <!-- CONTENIDO PRINCIPAL -->
+        <main class="admin-main-content">
+            
+            <!-- ENCABEZADO Y BIENVENIDA -->
+            <div class="admin-header-title">
+                <h1>Administración de <span>Productos</span></h1>
+                <p>Gestiona, modifica y publica tus productos de panadería y repostería en tiempo real.</p>
+            </div>
+
+            <!-- TARJETAS DE ESTADÍSTICAS -->
+            <section class="admin-stats-grid">
+                <div class="admin-stat-card">
+                    <div class="admin-stat-icon">
+                        <i class="fas fa-boxes-stacked"></i>
+                    </div>
+                    <div class="admin-stat-info">
+                        <div class="admin-stat-number" id="statTotalProducts">0</div>
+                        <div class="admin-stat-label">Total Productos</div>
+                    </div>
+                </div>
+
+                <div class="admin-stat-card">
+                    <div class="admin-stat-icon">
+                        <i class="fas fa-bread-slice"></i>
+                    </div>
+                    <div class="admin-stat-info">
+                        <div class="admin-stat-number" id="statPanaderia">0</div>
+                        <div class="admin-stat-label">Panadería</div>
+                    </div>
+                </div>
+
+                <div class="admin-stat-card">
+                    <div class="admin-stat-icon">
+                        <i class="fas fa-cake-candles"></i>
+                    </div>
+                    <div class="admin-stat-info">
+                        <div class="admin-stat-number" id="statReposteria">0</div>
+                        <div class="admin-stat-label">Repostería</div>
+                    </div>
+                </div>
+
+                <div class="admin-stat-card">
+                    <div class="admin-stat-icon" style="color:#2ecc71; background:rgba(46,204,113,0.15);">
+                        <i class="fas fa-check-circle"></i>
+                    </div>
+                    <div class="admin-stat-info">
+                        <div class="admin-stat-number" id="statDisponibles">0</div>
+                        <div class="admin-stat-label">Disponibles Hoy</div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- BARRA DE HERRAMIENTAS Y FILTROS -->
+            <section class="admin-toolbar-card">
+                <div class="admin-toolbar-left">
+                    <div class="admin-search-box">
+                        <i class="fas fa-search"></i>
+                        <input type="text" id="adminSearchInput" class="admin-search-input" placeholder="Buscar por nombre o ingrediente...">
+                    </div>
+
+                    <div class="admin-category-tabs">
+                        <button type="button" class="admin-tab-btn active" data-category="todos">Todos</button>
+                        <button type="button" class="admin-tab-btn" data-category="panaderia"><i class="fas fa-bread-slice"></i> Panadería</button>
+                        <button type="button" class="admin-tab-btn" data-category="reposteria"><i class="fas fa-cake-candles"></i> Repostería</button>
+                    </div>
+
+                    <select id="adminStatusFilter" class="admin-select" style="width: auto; padding: 8px 12px; font-size: 0.82rem;">
+                        <option value="todos">Todos los Estados</option>
+                        <option value="DISPONIBLE HOY">Disponible Hoy</option>
+                        <option value="BAJO PEDIDO">Bajo Pedido</option>
+                        <option value="AGOTADO">Agotado</option>
+                    </select>
+                </div>
+
+                <div class="admin-toolbar-right">
+                    <button type="button" id="btnOpenNewProduct" class="btn-admin-add">
+                        <i class="fas fa-plus"></i> Nuevo Producto
+                    </button>
+
+                    <button type="button" id="btnExportJSON" class="btn-admin-data" title="Descargar archivo JSON con todos los productos actuales">
+                        <i class="fas fa-download"></i> Exportar JSON
+                    </button>
+
+                    <label class="btn-admin-data" title="Subir un archivo JSON de productos para restaurar o sincronizar">
+                        <i class="fas fa-upload"></i> Importar JSON
+                        <input type="file" id="fileImportJSON" accept=".json" style="display:none;">
+                    </label>
+
+                    <button type="button" id="btnResetDefaults" class="btn-admin-data" style="color:#e74c3c;" title="Restaurar el catálogo original de fábrica">
+                        <i class="fas fa-rotate-left"></i> Restaurar
+                    </button>
+                </div>
+            </section>
+
+            <!-- GRILLA DE PRODUCTOS -->
+            <section id="adminProductsContainer" class="admin-products-grid">
+                <!-- Se llena dinámicamente con JavaScript -->
+            </section>
+
+        </main>
+    </div>
+
+    <!-- ========================================================
+         MODAL: CREAR / EDITAR PRODUCTO
+         ======================================================== -->
+    <div id="productModal" class="admin-modal-backdrop" aria-hidden="true">
+        <div class="admin-modal-window" role="dialog" aria-modal="true" aria-labelledby="modalProductTitle">
+            <div class="admin-modal-header">
+                <h2 id="modalProductTitle"><i class="fas fa-tag"></i> Producto</h2>
+                <button type="button" id="btnCloseProductModal" class="admin-modal-close" aria-label="Cerrar modal">&times;</button>
+            </div>
+
+            <form id="productForm">
+                <div class="admin-modal-body">
+                    <input type="hidden" id="prodId">
+
+                    <div class="admin-form-grid">
+                        
+                        <!-- Nombre del producto -->
+                        <div class="admin-form-full">
+                            <label for="prodName" class="admin-modal-label">Nombre del Producto *</label>
+                            <input type="text" id="prodName" class="admin-input" placeholder="Ej: Croissant de Almendras" required style="padding-left:14px;">
+                        </div>
+
+                        <!-- Categoría -->
+                        <div>
+                            <label for="prodCategory" class="admin-modal-label">Categoría *</label>
+                            <select id="prodCategory" class="admin-select" required>
+                                <option value="panaderia">Panadería Artesanal</option>
+                                <option value="reposteria">Repostería & Tortas</option>
+                            </select>
+                        </div>
+
+                        <!-- Precio en COP -->
+                        <div>
+                            <label for="prodPrice" class="admin-modal-label">Precio ($ COP) *</label>
+                            <input type="number" id="prodPrice" class="admin-input" placeholder="Ej: 3500" min="0" step="100" required style="padding-left:14px;">
+                        </div>
+
+                        <!-- Etiqueta / Badge -->
+                        <div>
+                            <label for="prodBadge" class="admin-modal-label">Etiqueta Destacada</label>
+                            <input type="text" id="prodBadge" class="admin-input" placeholder="Ej: ✦ POPULAR, ✦ TRADICIÓN, ✦ NUEVO" style="padding-left:14px;">
+                        </div>
+
+                        <!-- Estado de disponibilidad -->
+                        <div>
+                            <label for="prodStatus" class="admin-modal-label">Disponibilidad</label>
+                            <select id="prodStatus" class="admin-select">
+                                <option value="DISPONIBLE HOY">DISPONIBLE HOY</option>
+                                <option value="BAJO PEDIDO">BAJO PEDIDO</option>
+                                <option value="AGOTADO">AGOTADO</option>
+                            </select>
+                        </div>
+
+                        <!-- Descripción -->
+                        <div class="admin-form-full">
+                            <label for="prodDescription" class="admin-modal-label">Descripción</label>
+                            <textarea id="prodDescription" class="admin-textarea" rows="3" placeholder="Describe los ingredientes, aroma y elaboración del producto..."></textarea>
+                        </div>
+
+                        <!-- Características / Tags -->
+                        <div class="admin-form-full">
+                            <label for="prodSpecs" class="admin-modal-label">Características (Separadas por comas)</label>
+                            <input type="text" id="prodSpecs" class="admin-input" placeholder="Ej: Hojaldre 72h, Mantequilla de campo, Crujiente" style="padding-left:14px;">
+                        </div>
+
+                        <!-- Sección de Imagen -->
+                        <div class="admin-form-full">
+                            <label class="admin-modal-label">Fotografía del Producto</label>
+                            <div class="admin-image-selector">
+                                <div class="admin-img-preview-box">
+                                    <img id="imgPreview" src="assets/images/croissant.jpeg" alt="Vista previa" class="admin-img-thumb" onerror="this.src='assets/images/croissant.jpeg'">
+                                    
+                                    <div class="admin-img-actions">
+                                        <label class="admin-upload-btn-label">
+                                            <i class="fas fa-camera"></i> Subir foto desde tu dispositivo
+                                            <input type="file" id="fileUploadImage" accept="image/*" style="display:none;">
+                                        </label>
+                                        <span style="font-size: 0.75rem; color: var(--admin-text-muted);">Formatos: JPG, PNG, WEBP. Se optimiza automáticamente.</span>
+                                    </div>
+                                </div>
+
+                                <div>
+                                    <label for="prodImageURL" class="admin-modal-label" style="font-size:0.75rem;">O ruta / enlace de imagen existente:</label>
+                                    <input type="text" id="prodImageURL" class="admin-input" placeholder="assets/images/croissant.jpeg" style="padding-left:14px; font-size:0.85rem;">
+                                </div>
+
+                                <!-- Galería de imágenes existentes de la panadería para selección rápida -->
+                                <div>
+                                    <span style="font-size:0.75rem; color:var(--admin-gold-light); display:block; margin-bottom:6px;">Imágenes del catálogo disponibles:</span>
+                                    <div style="display:flex; flex-wrap:wrap; gap:8px;">
+                                        <button type="button" class="btn-preset-img" data-path="assets/images/croissant.jpeg">Croissant</button>
+                                        <button type="button" class="btn-preset-img" data-path="assets/images/pan-aliniado.jpeg">Pan Aliñado</button>
+                                        <button type="button" class="btn-preset-img" data-path="assets/images/roscon.jpeg">Roscón</button>
+                                        <button type="button" class="btn-preset-img" data-path="assets/images/pan_de_queso.jpg">Pan Queso</button>
+                                        <button type="button" class="btn-preset-img" data-path="assets/images/producto_1.jpg">Mantecada</button>
+                                        <button type="button" class="btn-preset-img" data-path="assets/images/torta_de_choco.jpg">Torta Choco</button>
+                                        <button type="button" class="btn-preset-img" data-path="assets/images/torta_casera.jpeg">Torta Casera</button>
+                                        <button type="button" class="btn-preset-img" data-path="assets/images/torta_stitch.jpg">Torta Stitch</button>
+                                        <button type="button" class="btn-preset-img" data-path="assets/images/torta_unicornio.jpeg">Torta Unicornio</button>
+                                        <button type="button" class="btn-preset-img" data-path="assets/images/torta_corazon.jpg">Torta Corazón</button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+
+                <div class="admin-modal-footer">
+                    <button type="button" id="btnCancelProductModal" class="admin-btn-cancel">Cancelar</button>
+                    <button type="submit" id="btnSaveProduct" class="admin-btn-primary" style="width:auto; padding:10px 24px;">
+                        <i class="fas fa-save"></i> Guardar Producto
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- ========================================================
+         MODAL: CONFIRMACIÓN DE ELIMINACIÓN
+         ======================================================== -->
+    <div id="deleteModal" class="admin-modal-backdrop" aria-hidden="true">
+        <div class="admin-modal-window" style="max-width: 420px; text-align: center; padding: 30px 24px;" role="dialog" aria-modal="true">
+            <div style="font-size: 3rem; color: var(--admin-danger); margin-bottom: 12px;">
+                <i class="fas fa-trash-can"></i>
+            </div>
+            <h3 style="font-family: var(--admin-font-heading); color: #fff; margin: 0 0 8px;">¿Eliminar este producto?</h3>
+            <p style="color: var(--admin-text-muted); font-size: 0.9rem; margin: 0 0 24px;" id="deleteProductName">
+                Esta acción removerá el producto del catálogo público y de la tienda.
+            </p>
+            <div style="display: flex; gap: 12px; justify-content: center;">
+                <button type="button" id="btnCancelDelete" class="admin-btn-cancel" style="flex:1;">Cancelar</button>
+                <button type="button" id="btnConfirmDelete" class="admin-btn-primary" style="flex:1; background: var(--admin-danger); box-shadow: 0 8px 24px rgba(231,76,60,0.4);">
+                    Sí, Eliminar
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- CONTENEDOR DE ALERTAS TOAST -->
+    <div id="adminToastContainer" class="admin-toast-container" aria-live="polite"></div>
+
+    <!-- Scripts de funcionalidad -->
+    <script src="assets/js/products.js"></script>
+    <script>
+    function onReady(fn) {
+        if (document.readyState !== 'loading') {
+            fn();
+        } else {
+            document.addEventListener('DOMContentLoaded', fn);
+        }
+    }
+
+    onReady(() => {
+        // Referencias a las vistas principales
+        const loginView = document.getElementById('loginView');
+        const dashboardView = document.getElementById('dashboardView');
+
+        // Formulario de login
+        const loginForm = document.getElementById('adminLoginForm');
+        const loginAlert = document.getElementById('loginAlert');
+        const loginAlertText = document.getElementById('loginAlertText');
+        const adminEmail = document.getElementById('adminEmail');
+        const adminPassword = document.getElementById('adminPassword');
+        const rememberMe = document.getElementById('rememberMe');
+        const btnTogglePassword = document.getElementById('btnTogglePassword');
+        const togglePassIcon = document.getElementById('togglePassIcon');
+        const btnFillDemo = document.getElementById('btnFillDemo');
+        const btnLogout = document.getElementById('btnLogout');
+
+        // Controles del Dashboard
+        const container = document.getElementById('adminProductsContainer');
+        const searchInput = document.getElementById('adminSearchInput');
+        const tabBtns = document.querySelectorAll('.admin-tab-btn');
+        const statusFilter = document.getElementById('adminStatusFilter');
+        const btnOpenNewProduct = document.getElementById('btnOpenNewProduct');
+        const btnExportJSON = document.getElementById('btnExportJSON');
+        const fileImportJSON = document.getElementById('fileImportJSON');
+        const btnResetDefaults = document.getElementById('btnResetDefaults');
+
+        // Stats
+        const statTotal = document.getElementById('statTotalProducts');
+        const statPanaderia = document.getElementById('statPanaderia');
+        const statReposteria = document.getElementById('statReposteria');
+        const statDisponibles = document.getElementById('statDisponibles');
+
+        // Modal de Producto
+        const productModal = document.getElementById('productModal');
+        const modalProductTitle = document.getElementById('modalProductTitle');
+        const productForm = document.getElementById('productForm');
+        const btnCloseProductModal = document.getElementById('btnCloseProductModal');
+        const btnCancelProductModal = document.getElementById('btnCancelProductModal');
+
+        // Campos del formulario
+        const prodId = document.getElementById('prodId');
+        const prodName = document.getElementById('prodName');
+        const prodCategory = document.getElementById('prodCategory');
+        const prodPrice = document.getElementById('prodPrice');
+        const prodBadge = document.getElementById('prodBadge');
+        const prodStatus = document.getElementById('prodStatus');
+        const prodDescription = document.getElementById('prodDescription');
+        const prodSpecs = document.getElementById('prodSpecs');
+        const prodImageURL = document.getElementById('prodImageURL');
+        const imgPreview = document.getElementById('imgPreview');
+        const fileUploadImage = document.getElementById('fileUploadImage');
+
+        // Modal de Eliminación
+        const deleteModal = document.getElementById('deleteModal');
+        const deleteProductName = document.getElementById('deleteProductName');
+        const btnCancelDelete = document.getElementById('btnCancelDelete');
+        const btnConfirmDelete = document.getElementById('btnConfirmDelete');
+        let productToDeleteId = null;
+
+        // Estado local de filtros
+        let currentCategory = 'todos';
+        let currentSearch = '';
+        let currentStatus = 'todos';
+
+        // ==========================================
+        // 1. GESTIÓN DE SESIÓN Y VISTAS
+        // ==========================================
+        function checkAuthState() {
+            if (window.DulceAuth && window.DulceAuth.isAuthenticated()) {
+                loginView.style.display = 'none';
+                dashboardView.style.display = 'flex';
+                renderDashboard();
+
+                // Verificar si hay parámetro para editar directo en URL (?edit=prod-id)
+                const urlParams = new URLSearchParams(window.location.search);
+                const editId = urlParams.get('edit');
+                if (editId) {
+                    openEditModal(editId);
+                    // Limpiar parámetro de URL sin recargar
+                    window.history.replaceState({}, document.title, window.location.pathname);
+                }
+            } else {
+                loginView.style.display = 'flex';
+                dashboardView.style.display = 'none';
+            }
+        }
+
+        // Toggle ver contraseña
+        btnTogglePassword.addEventListener('click', () => {
+            if (adminPassword.type === 'password') {
+                adminPassword.type = 'text';
+                togglePassIcon.classList.replace('fa-eye', 'fa-eye-slash');
+            } else {
+                adminPassword.type = 'password';
+                togglePassIcon.classList.replace('fa-eye-slash', 'fa-eye');
+            }
+        });
+
+        // Botón para autocompletar clave
+        btnFillDemo.addEventListener('click', () => {
+            adminEmail.value = 'felipegamez348@gmail.com';
+            adminPassword.value = 'PASTEL 2060';
+            showToast('Credenciales completadas', 'info');
+        });
+
+        // Captcha reCAPTCHA "No soy un robot"
+        let isCaptchaVerified = false;
+        const recaptchaTrigger = document.getElementById('recaptchaTrigger');
+        const recaptchaCheckbox = document.getElementById('recaptchaCheckbox');
+        const recaptchaBox = document.getElementById('recaptchaBox');
+        const recaptchaError = document.getElementById('recaptchaError');
+
+        function triggerCaptcha() {
+            if (isCaptchaVerified) return;
+
+            recaptchaBox.classList.remove('has-error');
+            recaptchaError.classList.remove('show');
+            recaptchaCheckbox.classList.add('loading');
+
+            setTimeout(() => {
+                recaptchaCheckbox.classList.remove('loading');
+                recaptchaCheckbox.classList.add('checked');
+                recaptchaCheckbox.setAttribute('aria-checked', 'true');
+                isCaptchaVerified = true;
+            }, 600);
+        }
+
+        if (recaptchaTrigger) {
+            recaptchaTrigger.addEventListener('click', triggerCaptcha);
+            recaptchaTrigger.addEventListener('keydown', (e) => {
+                if (e.key === ' ' || e.key === 'Enter') {
+                    e.preventDefault();
+                    triggerCaptcha();
+                }
+            });
+        }
+
+        // Submit Login
+        loginForm.addEventListener('submit', (e) => {
+            e.preventDefault();
+            loginAlert.style.display = 'none';
+
+            if (!isCaptchaVerified) {
+                recaptchaBox.classList.add('has-error');
+                recaptchaError.classList.add('show');
+                return;
+            }
+
+            const email = adminEmail.value.trim();
+            const password = adminPassword.value.trim();
+            const remember = rememberMe.checked;
+
+            const res = window.DulceAuth.login(email, password, remember);
+            if (res.success) {
+                showToast(`¡Bienvenido, ${res.user.name}!`, 'success');
+                checkAuthState();
+            } else {
+                loginAlertText.textContent = res.message || 'Credenciales incorrectas.';
+                loginAlert.style.display = 'block';
+                adminPassword.value = '';
+                adminPassword.focus();
+            }
+        });
+
+        // Logout
+        btnLogout.addEventListener('click', () => {
+            if (confirm('¿Deseas cerrar la sesión del panel de administración?')) {
+                window.DulceAuth.logout();
+                showToast('Sesión cerrada correctamente', 'info');
+                checkAuthState();
+            }
+        });
+
+        // ==========================================
+        // 2. RENDERIZADO DEL CATÁLOGO & ESTADÍSTICAS
+        // ==========================================
+        function renderDashboard() {
+            const allProducts = window.DulceProducts.getAll();
+
+            // Calcular estadísticas
+            const panaderiaCount = allProducts.filter(p => p.category === 'panaderia').length;
+            const reposteriaCount = allProducts.filter(p => p.category === 'reposteria').length;
+            const disponiblesCount = allProducts.filter(p => (p.status || '').toUpperCase().includes('DISPONIBLE')).length;
+
+            statTotal.textContent = allProducts.length;
+            statPanaderia.textContent = panaderiaCount;
+            statReposteria.textContent = reposteriaCount;
+            statDisponibles.textContent = disponiblesCount;
+
+            // Filtrado según búsqueda, pestaña y estado
+            let filtered = allProducts;
+
+            if (currentCategory !== 'todos') {
+                filtered = filtered.filter(p => p.category === currentCategory);
+            }
+
+            if (currentStatus !== 'todos') {
+                filtered = filtered.filter(p => (p.status || '').toUpperCase() === currentStatus.toUpperCase());
+            }
+
+            if (currentSearch.trim() !== '') {
+                const q = currentSearch.toLowerCase();
+                filtered = filtered.filter(p => {
+                    const matchName = (p.name || '').toLowerCase().includes(q);
+                    const matchDesc = (p.description || '').toLowerCase().includes(q);
+                    const matchBadge = (p.badge || '').toLowerCase().includes(q);
+                    const matchSpecs = (p.specs || []).some(s => s.toLowerCase().includes(q));
+                    return matchName || matchDesc || matchBadge || matchSpecs;
+                });
+            }
+
+            // Generar HTML de las tarjetas
+            if (filtered.length === 0) {
+                container.innerHTML = `
+                    <div class="admin-empty-state">
+                        <i class="fas fa-search"></i>
+                        <h3>No se encontraron productos</h3>
+                        <p>Intenta cambiar el término de búsqueda o el filtro de categoría.</p>
+                    </div>
+                `;
+                return;
+            }
+
+            container.innerHTML = filtered.map(prod => {
+                const formattedPrice = window.DulceProducts.formatPrice(prod.price);
+                const safeName = (prod.name || '').replace(/"/g, '&quot;');
+                const categoryLabel = prod.category === 'panaderia' ? '🥖 Panadería' : '🎂 Repostería';
+                const statusDotClass = (prod.status || '').includes('DISPONIBLE') ? 'active' : ((prod.status || '').includes('PEDIDO') ? 'order' : 'empty');
+                
+                const specsBadges = (prod.specs || []).map(s => `<span class="admin-spec-pill">${s}</span>`).join('');
+
+                return `
+                <div class="admin-product-card" data-id="${prod.id}">
+                    <div class="admin-card-img-wrap">
+                        <img src="${prod.image || 'assets/images/croissant.jpeg'}" alt="${safeName}" onerror="this.src='assets/images/croissant.jpeg'">
+                        <span class="admin-card-category-badge">${categoryLabel}</span>
+                        <span class="admin-card-badge-pill">${prod.badge || '✦ DESTACADO'}</span>
+                        <span class="admin-card-price-tag">${formattedPrice}</span>
+                    </div>
+                    <div class="admin-card-content">
+                        <h3 class="admin-card-title">${prod.name}</h3>
+                        <p class="admin-card-desc">${prod.description || 'Sin descripción detallada.'}</p>
+                        
+                        <div class="admin-card-specs">
+                            ${specsBadges}
+                        </div>
+
+                        <div class="admin-card-status">
+                            <span class="status-dot ${statusDotClass}"></span>
+                            <span>${prod.status || 'DISPONIBLE HOY'}</span>
+                        </div>
+
+                        <div class="admin-card-actions">
+                            <button type="button" class="btn-card-edit" onclick="window.adminOpenEdit('${prod.id}')">
+                                <i class="fas fa-pencil-alt"></i> Editar
+                            </button>
+                            <button type="button" class="btn-card-delete" onclick="window.adminOpenDelete('${prod.id}', '${safeName}')" title="Eliminar producto">
+                                <i class="fas fa-trash-alt"></i>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+                `;
+            }).join('');
+        }
+
+        // Filtro de búsqueda
+        searchInput.addEventListener('input', (e) => {
+            currentSearch = e.target.value;
+            renderDashboard();
+        });
+
+        // Tabs de categoría
+        tabBtns.forEach(btn => {
+            btn.addEventListener('click', () => {
+                tabBtns.forEach(b => b.classList.remove('active'));
+                btn.classList.add('active');
+                currentCategory = btn.getAttribute('data-category');
+                renderDashboard();
+            });
+        });
+
+        // Filtro de estado
+        statusFilter.addEventListener('change', (e) => {
+            currentStatus = e.target.value;
+            renderDashboard();
+        });
+
+        // ==========================================
+        // 3. MODAL DE CREACIÓN / EDICIÓN
+        // ==========================================
+        function openNewProductModal() {
+            modalProductTitle.innerHTML = '<i class="fas fa-plus-circle"></i> Nuevo Producto';
+            prodId.value = '';
+            prodName.value = '';
+            prodCategory.value = 'panaderia';
+            prodPrice.value = '';
+            prodBadge.value = '✦ NOVEDAD';
+            prodStatus.value = 'DISPONIBLE HOY';
+            prodDescription.value = '';
+            prodSpecs.value = 'Artesanal, Fresco, Calidad';
+            prodImageURL.value = 'assets/images/croissant.jpeg';
+            imgPreview.src = 'assets/images/croissant.jpeg';
+            fileUploadImage.value = '';
+
+            productModal.classList.add('active');
+            productModal.setAttribute('aria-hidden', 'false');
+            prodName.focus();
+        }
+
+        function openEditModal(id) {
+            const prod = window.DulceProducts.getById(id);
+            if (!prod) {
+                showToast('Producto no encontrado.', 'error');
+                return;
+            }
+
+            modalProductTitle.innerHTML = `<i class="fas fa-pencil-alt"></i> Editar: ${prod.name}`;
+            prodId.value = prod.id;
+            prodName.value = prod.name;
+            prodCategory.value = prod.category || 'panaderia';
+            prodPrice.value = prod.price || 0;
+            prodBadge.value = prod.badge || '';
+            prodStatus.value = prod.status || 'DISPONIBLE HOY';
+            prodDescription.value = prod.description || '';
+            prodSpecs.value = Array.isArray(prod.specs) ? prod.specs.join(', ') : (prod.specs || '');
+            prodImageURL.value = prod.image || 'assets/images/croissant.jpeg';
+            imgPreview.src = prod.image || 'assets/images/croissant.jpeg';
+            fileUploadImage.value = '';
+
+            productModal.classList.add('active');
+            productModal.setAttribute('aria-hidden', 'false');
+            prodName.focus();
+        }
+
+        function closeProductModal() {
+            productModal.classList.remove('active');
+            productModal.setAttribute('aria-hidden', 'true');
+        }
+
+        btnOpenNewProduct.addEventListener('click', openNewProductModal);
+        btnCloseProductModal.addEventListener('click', closeProductModal);
+        btnCancelProductModal.addEventListener('click', closeProductModal);
+
+        // Previsualizar cambio en la URL manual
+        prodImageURL.addEventListener('input', (e) => {
+            const val = e.target.value.trim();
+            imgPreview.src = val || 'assets/images/croissant.jpeg';
+        });
+
+        // Botones de presets de imágenes
+        document.querySelectorAll('.btn-preset-img').forEach(btn => {
+            btn.addEventListener('click', () => {
+                const path = btn.getAttribute('data-path');
+                prodImageURL.value = path;
+                imgPreview.src = path;
+            });
+        });
+
+        // Subida de imagen desde equipo (FileReader -> Base64)
+        fileUploadImage.addEventListener('change', (e) => {
+            const file = e.target.files[0];
+            if (!file) return;
+
+            // Validar que sea imagen
+            if (!file.type.startsWith('image/')) {
+                showToast('Por favor selecciona un archivo de imagen válido.', 'error');
+                return;
+            }
+
+            const reader = new FileReader();
+            reader.onload = function (evt) {
+                const base64Data = evt.target.result;
+                prodImageURL.value = base64Data;
+                imgPreview.src = base64Data;
+                showToast('Imagen cargada correctamente.', 'success');
+            };
+            reader.readAsDataURL(file);
+        });
+
+        // Guardar producto (Crear o Modificar)
+        productForm.addEventListener('submit', (e) => {
+            e.preventDefault();
+
+            const productData = {
+                id: prodId.value.trim() || null,
+                name: prodName.value.trim(),
+                category: prodCategory.value,
+                price: parseInt(prodPrice.value, 10) || 0,
+                badge: prodBadge.value.trim() || '✦ DESTACADO',
+                status: prodStatus.value,
+                description: prodDescription.value.trim(),
+                specs: prodSpecs.value.split(',').map(s => s.trim()).filter(Boolean),
+                image: prodImageURL.value.trim() || 'assets/images/croissant.jpeg'
+            };
+
+            const result = window.DulceProducts.save(productData);
+            if (result.success) {
+                closeProductModal();
+                showToast('¡Producto guardado exitosamente!', 'success');
+                renderDashboard();
+            } else {
+                showToast(result.message || 'Error al guardar el producto.', 'error');
+            }
+        });
+
+        // ==========================================
+        // 4. ELIMINACIÓN DE PRODUCTO
+        // ==========================================
+        window.adminOpenDelete = function (id, name) {
+            productToDeleteId = id;
+            deleteProductName.innerHTML = `¿Estás seguro de que deseas eliminar <strong>${name}</strong>? Esta acción no se puede deshacer.`;
+            deleteModal.classList.add('active');
+            deleteModal.setAttribute('aria-hidden', 'false');
+        };
+
+        function closeDeleteModal() {
+            deleteModal.classList.remove('active');
+            deleteModal.setAttribute('aria-hidden', 'true');
+            productToDeleteId = null;
+        }
+
+        btnCancelDelete.addEventListener('click', closeDeleteModal);
+
+        btnConfirmDelete.addEventListener('click', () => {
+            if (productToDeleteId) {
+                const ok = window.DulceProducts.delete(productToDeleteId);
+                if (ok) {
+                    showToast('Producto eliminado del catálogo.', 'info');
+                    renderDashboard();
+                } else {
+                    showToast('No se pudo eliminar el producto.', 'error');
+                }
+                closeDeleteModal();
+            }
+        });
+
+        // ==========================================
+        // 5. IMPORTAR / EXPORTAR / RESTAURAR
+        // ==========================================
+        btnExportJSON.addEventListener('click', () => {
+            window.DulceProducts.exportJSON();
+            showToast('Archivo JSON de catálogo descargado.', 'success');
+        });
+
+        fileImportJSON.addEventListener('change', (e) => {
+            const file = e.target.files[0];
+            if (!file) return;
+
+            const reader = new FileReader();
+            reader.onload = function (evt) {
+                const res = window.DulceProducts.importJSON(evt.target.result);
+                if (res.success) {
+                    showToast(`Se importaron ${res.count} productos exitosamente.`, 'success');
+                    renderDashboard();
+                } else {
+                    showToast(res.message || 'Error al importar archivo.', 'error');
+                }
+                fileImportJSON.value = '';
+            };
+            reader.readAsText(file);
+        });
+
+        btnResetDefaults.addEventListener('click', () => {
+            if (confirm('⚠️ ¿Deseas restaurar el catálogo completo a su configuración de fábrica? Perderás cualquier cambio no exportado.')) {
+                window.DulceProducts.resetDefaults();
+                showToast('Catálogo restaurado a los valores iniciales.', 'info');
+                renderDashboard();
+            }
+        });
+
+        // Exponer funciones globales para botones dentro de strings HTML
+        window.adminOpenEdit = openEditModal;
+
+        // ==========================================
+        // 6. TOAST FEEDBACK
+        // ==========================================
+        function showToast(message, type = 'info') {
+            const container = document.getElementById('adminToastContainer');
+            const toast = document.createElement('div');
+            toast.className = `admin-toast ${type}`;
+
+            let icon = 'info-circle';
+            if (type === 'success') icon = 'check-circle';
+            if (type === 'error') icon = 'exclamation-circle';
+
+            toast.innerHTML = `<i class="fas fa-${icon}"></i> <span>${message}</span>`;
+            container.appendChild(toast);
+
+            setTimeout(() => {
+                toast.style.opacity = '0';
+                toast.style.transform = 'translateX(40px)';
+                toast.style.transition = 'all 0.3s ease';
+                setTimeout(() => toast.remove(), 300);
+            }, 3500);
+        }
+
+        // Inicializar
+        checkAuthState();
+    });
+    </script>
+</body>
+</html>
